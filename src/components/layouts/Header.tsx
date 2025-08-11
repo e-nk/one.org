@@ -133,7 +133,7 @@ export default function Header() {
                 <img 
                   src="/one_logo/ONE-logo-black.svg" 
                   alt="ONE Academy" 
-                  className="h-14 lg:h-16 w-auto transition-transform duration-300 group-hover:scale-105"
+                  className="h-14 lg:h-20 w-auto transition-transform duration-300 group-hover:scale-105"
                 />
                 <div className="absolute -bottom-1 left-0 w-full h-0.5 bg-one-primary-plum scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
               </div>

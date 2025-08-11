@@ -44,7 +44,7 @@ export default function MainLayout({
       </main>
       
       {/* Footer - Uncomment when ready */}
-      {/* <Footer /> */}
+      <Footer />
       
       {/* Scroll to Top Button */}
       <ScrollToTopButton />
