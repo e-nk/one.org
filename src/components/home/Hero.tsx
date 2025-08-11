@@ -245,28 +245,28 @@ export default function Hero() {
               </div>
 
               {/* Course Progress Indicator */}
-              <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 bg-white rounded-full px-6 py-3 shadow-lg border border-one-primary-plum/20">
+              {/* <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 bg-white rounded-full px-6 py-3 shadow-lg border border-one-primary-plum/20">
                 <div className="flex items-center space-x-3">
                   <div className="w-2 h-2 bg-one-primary-neon rounded-full animate-pulse"></div>
                   <span className="text-sm font-semibold text-one-primary-black font-colfax">Live Learning</span>
                   <div className="w-2 h-2 bg-one-primary-plum rounded-full animate-pulse delay-500"></div>
                 </div>
-              </div>
+              </div> */}
 
               {/* Impact Metrics - Minimal and Elegant */}
-              <div className="absolute -top-4 -right-4 bg-one-primary-plum text-white rounded-xl p-3 shadow-lg">
+              {/* <div className="absolute -top-4 -right-4 bg-one-primary-plum text-white rounded-xl p-3 shadow-lg">
                 <div className="text-center">
                   <div className="text-sm font-bold font-italian-plate">Real Impact</div>
                   <div className="text-xs opacity-90 font-colfax">Every Course</div>
                 </div>
-              </div>
+              </div> */}
 
-              <div className="absolute top-1/3 -left-4 bg-white rounded-xl p-3 shadow-lg border border-one-primary-teal/20">
+              {/* <div className="absolute top-1/3 -left-4 bg-white rounded-xl p-3 shadow-lg border border-one-primary-teal/20">
                 <div className="text-center">
                   <div className="text-lg font-bold text-one-primary-teal font-italian-plate">Learn</div>
                   <div className="text-xs text-gray-500 font-colfax">→ Act</div>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
