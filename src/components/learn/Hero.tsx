@@ -29,7 +29,7 @@ export default function LearnHero() {
   }, []);
 
   return (
-    <section className="relative min-h-screen bg-gray-50 flex items-center overflow-hidden -mt-27 lg:-mt-54 pt-20 lg:pt-54">
+    <section className="relative min-h-screen bg-one-secondary-fuchsia/20 flex items-center overflow-hidden -mt-27 lg:-mt-54 pt-20 lg:pt-54">
       
       {/* Background decorative elements - Different color scheme */}
       <div className="absolute inset-0">
