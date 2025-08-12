@@ -48,12 +48,6 @@ export default function Hero() {
             isVisible ? 'translate-x-0 opacity-100' : '-translate-x-10 opacity-0'
           }`}>
             
-            {/* Badge */}
-            {/* <div className="inline-flex items-center px-3 py-2 lg:px-4 lg:py-2 bg-one-primary-plum/10 rounded-full border border-one-primary-plum/20">
-              <div className="w-2 h-2 bg-one-primary-neon rounded-full mr-2 lg:mr-3 animate-pulse"></div>
-              <span className="text-xs lg:text-sm font-semibold text-one-primary-plum font-colfax">Digital Learning Platform</span>
-            </div> */}
-
             {/* Dynamic Headline */}
             <div className="space-y-3 lg:space-y-4">
               <div className="min-h-[5rem] lg:h-20 xl:h-24 overflow-hidden relative">
@@ -156,117 +150,155 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Visual Side */}
+          {/* Visual Side - World Map with Enhanced Active Locations */}
           <div className={`hidden lg:block relative transform transition-all duration-1000 delay-300 ${
             isVisible ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0'
           }`}>
             <div className="relative">
               
-              {/* Main Visual - Global Impact Network */}
-              <div className="aspect-[4/3] rounded-2xl bg-one-primary-black/95 overflow-hidden relative">
+              {/* World Map Container */}
+              <div className="aspect-[4/3] rounded-2xl overflow-hidden relative shadow-2xl border-4 border-white/30">
                 
-                {/* World Map Background */}
-                <div className="absolute inset-0 opacity-20">
-                  <svg className="w-full h-full" viewBox="0 0 400 300" fill="none">
-                    <defs>
-                      <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
-                        <path d="M 20 0 L 0 0 0 20" fill="none" stroke="currentColor" strokeWidth="0.5" className="text-one-primary-neon"/>
-                      </pattern>
-                    </defs>
-                    <rect width="100%" height="100%" fill="url(#grid)" />
-                  </svg>
+                {/* World Map Image */}
+                <img 
+                  src="/images/world-map-2.png" 
+                  alt="ONE Global Impact - Active locations worldwide" 
+                  className="w-full h-full object-cover"
+                />
+                
+                {/* Map Overlay for better contrast */}
+                <div className="absolute inset-0 bg-gradient-to-br from-one-primary-black/30 via-transparent to-one-primary-plum/20"></div>
+
+                {/* North America Spots - Enhanced */}
+                <div className="absolute top-[35%] left-[10%] w-5 h-5 bg-one-primary-plum rounded-full shadow-lg shadow-one-primary-plum/50" 
+                     style={{
+                       animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+                     }}>
+                  <div className="absolute inset-0 w-5 h-5 bg-one-primary-plum rounded-full animate-ping opacity-75"></div>
+                </div>
+                <div className="absolute top-[34%] left-[25%] w-4 h-4 bg-one-primary-plum rounded-full shadow-md shadow-one-primary-plum/40" 
+                     style={{
+                       animation: 'pulse 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite 0.5s'
+                     }}>
+                  <div className="absolute inset-0 w-4 h-4 bg-one-primary-plum rounded-full animate-ping opacity-60"></div>
+                </div>
+                <div className="absolute top-[75%] left-[30%] w-6 h-6 bg-one-primary-plum rounded-full shadow-lg shadow-one-primary-plum/60" 
+                     style={{
+                       animation: 'pulse 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite 1s'
+                     }}>
+                  <div className="absolute inset-0 w-6 h-6 bg-one-primary-plum rounded-full animate-ping opacity-70"></div>
                 </div>
 
-                {/* Animated Connection Lines */}
-                <svg className="absolute inset-0 w-full h-full" viewBox="0 0 400 300">
-                  {/* Connection lines with animation */}
-                  <line x1="50" y1="80" x2="150" y2="120" stroke="currentColor" strokeWidth="1" className="text-one-primary-neon opacity-60">
-                    <animate attributeName="stroke-dasharray" values="0,100;50,50;100,0;0,100" dur="3s" repeatCount="indefinite" />
-                  </line>
-                  <line x1="200" y1="60" x2="300" y2="140" stroke="currentColor" strokeWidth="1" className="text-one-primary-teal opacity-60">
-                    <animate attributeName="stroke-dasharray" values="0,100;50,50;100,0;0,100" dur="4s" repeatCount="indefinite" />
-                  </line>
-                  <line x1="150" y1="200" x2="280" y2="80" stroke="currentColor" strokeWidth="1" className="text-one-primary-plum opacity-60">
-                    <animate attributeName="stroke-dasharray" values="0,100;50,50;100,0;0,100" dur="3.5s" repeatCount="indefinite" />
-                  </line>
-                </svg>
+                {/* Europe Spots - Enhanced */}
+                <div className="absolute top-[35%] left-[48%] w-5 h-5 bg-one-primary-plum rounded-full shadow-lg shadow-one-primary-plum/50" 
+                     style={{
+                       animation: 'pulse 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite 0.3s'
+                     }}>
+                  <div className="absolute inset-0 w-5 h-5 bg-one-primary-plum rounded-full animate-ping opacity-75"></div>
+                </div>
+                <div className="absolute top-[35%] left-[50%] w-4 h-4 bg-one-primary-plum rounded-full shadow-md shadow-one-primary-plum/40" 
+                     style={{
+                       animation: 'pulse 2.8s cubic-bezier(0.4, 0, 0.6, 1) infinite 0.8s'
+                     }}>
+                  <div className="absolute inset-0 w-4 h-4 bg-one-primary-plum rounded-full animate-ping opacity-60"></div>
+                </div>
 
-                {/* Impact Nodes */}
-                <div className="absolute top-6 left-12 w-3 h-3 bg-one-primary-neon rounded-full animate-pulse"></div>
-                <div className="absolute top-16 right-20 w-2 h-2 bg-one-primary-teal rounded-full animate-pulse delay-1000"></div>
-                <div className="absolute bottom-20 left-20 w-2.5 h-2.5 bg-one-primary-plum rounded-full animate-pulse delay-500"></div>
-                <div className="absolute bottom-12 right-16 w-3 h-3 bg-one-primary-neon rounded-full animate-pulse delay-1500"></div>
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full animate-pulse delay-2000"></div>
+                {/* Middle East Spots - Enhanced */}
+                <div className="absolute top-[40%] left-[58%] w-4 h-4 bg-one-primary-plum rounded-full shadow-md shadow-one-primary-plum/40" 
+                     style={{
+                       animation: 'pulse 2.6s cubic-bezier(0.4, 0, 0.6, 1) infinite 0.6s'
+                     }}>
+                  <div className="absolute inset-0 w-4 h-4 bg-one-primary-plum rounded-full animate-ping opacity-65"></div>
+                </div>
+                <div className="absolute top-[38%] left-[60%] w-5 h-5 bg-one-primary-plum rounded-full shadow-lg shadow-one-primary-plum/50" 
+                     style={{
+                       animation: 'pulse 2.3s cubic-bezier(0.4, 0, 0.6, 1) infinite 0.2s'
+                     }}>
+                  <div className="absolute inset-0 w-5 h-5 bg-one-primary-plum rounded-full animate-ping opacity-70"></div>
+                </div>
 
-                {/* Central Content */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center space-y-6">
-                    
-                    {/* Main Icon */}
-                    <div className="relative">
-                      <div className="w-20 h-20 bg-one-primary-plum rounded-full flex items-center justify-center mx-auto">
-                        <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9" />
-                        </svg>
-                      </div>
-                      <div className="absolute -top-1 -right-1 w-6 h-6 bg-one-primary-neon rounded-full flex items-center justify-center">
-                        <span className="text-xs font-bold text-one-primary-black">+</span>
-                      </div>
-                    </div>
+                {/* Africa Spots - Enhanced Multiple locations */}
+                <div className="absolute top-[60%] left-[62%] w-6 h-6 bg-one-primary-plum rounded-full shadow-xl shadow-one-primary-plum/60" 
+                     style={{
+                       animation: 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite 0.1s'
+                     }}>
+                  <div className="absolute inset-0 w-6 h-6 bg-one-primary-plum rounded-full animate-ping opacity-80"></div>
+                </div>
+                <div className="absolute top-[55%] left-[55%] w-5 h-5 bg-one-primary-plum rounded-full shadow-lg shadow-one-primary-plum/50" 
+                     style={{
+                       animation: 'pulse 2.1s cubic-bezier(0.4, 0, 0.6, 1) infinite 0.7s'
+                     }}>
+                  <div className="absolute inset-0 w-5 h-5 bg-one-primary-plum rounded-full animate-ping opacity-75"></div>
+                </div>
+                <div className="absolute top-[55%] left-[50%] w-4 h-4 bg-one-primary-plum rounded-full shadow-md shadow-one-primary-plum/40" 
+                     style={{
+                       animation: 'pulse 2.7s cubic-bezier(0.4, 0, 0.6, 1) infinite 0.4s'
+                     }}>
+                  <div className="absolute inset-0 w-4 h-4 bg-one-primary-plum rounded-full animate-ping opacity-60"></div>
+                </div>
+                <div className="absolute top-[60%] left-[53%] w-5 h-5 bg-one-primary-plum rounded-full shadow-lg shadow-one-primary-plum/50" 
+                     style={{
+                       animation: 'pulse 1.9s cubic-bezier(0.4, 0, 0.6, 1) infinite 0.9s'
+                     }}>
+                  <div className="absolute inset-0 w-5 h-5 bg-one-primary-plum rounded-full animate-ping opacity-70"></div>
+                </div>
+                <div className="absolute top-[48%] left-[48%] w-4 h-4 bg-one-primary-plum rounded-full shadow-md shadow-one-primary-plum/40" 
+                     style={{
+                       animation: 'pulse 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite 1.1s'
+                     }}>
+                  <div className="absolute inset-0 w-4 h-4 bg-one-primary-plum rounded-full animate-ping opacity-65"></div>
+                </div>
+                <div className="absolute top-[70%] left-[62%] w-4 h-4 bg-one-primary-plum rounded-full shadow-md shadow-one-primary-plum/40" 
+                     style={{
+                       animation: 'pulse 2.9s cubic-bezier(0.4, 0, 0.6, 1) infinite 1.3s'
+                     }}>
+                  <div className="absolute inset-0 w-4 h-4 bg-one-primary-plum rounded-full animate-ping opacity-60"></div>
+                </div>
+                <div className="absolute top-[82%] left-[57%] w-5 h-5 bg-one-primary-plum rounded-full shadow-lg shadow-one-primary-plum/50" 
+                     style={{
+                       animation: 'pulse 1.7s cubic-bezier(0.4, 0, 0.6, 1) infinite 0.15s'
+                     }}>
+                  <div className="absolute inset-0 w-5 h-5 bg-one-primary-plum rounded-full animate-ping opacity-75"></div>
+                </div>
+                <div className="absolute top-[32%] left-[65%] w-4 h-4 bg-one-primary-plum rounded-full shadow-md shadow-one-primary-plum/40" 
+                     style={{
+                       animation: 'pulse 2.6s cubic-bezier(0.4, 0, 0.6, 1) infinite 0.75s'
+                     }}>
+                  <div className="absolute inset-0 w-4 h-4 bg-one-primary-plum rounded-full animate-ping opacity-65"></div>
+                </div>
 
-                    {/* Text Content */}
-                    <div className="space-y-3">
-                      <h3 className="text-xl font-bold text-white font-italian-plate">
-                        Global Impact Network
-                      </h3>
-                      <p className="text-sm text-gray-300 font-colfax max-w-xs mx-auto">
-                        Connect with changemakers worldwide and turn learning into real action
-                      </p>
-                    </div>
+                {/* Large Pulse rings for major locations */}
+                <div className="absolute top-[75%] left-[30%] w-12 h-12 border-2 border-one-primary-plum rounded-full animate-ping opacity-30"></div>
+                <div className="absolute top-[60%] left-[62%] w-12 h-12 border-2 border-one-primary-plum rounded-full animate-ping opacity-25 delay-500"></div>
+                <div className="absolute top-[35%] left-[48%] w-12 h-12 border-2 border-one-primary-plum rounded-full animate-ping opacity-20 delay-1000"></div>
 
-                    {/* Mini Stats */}
-                    <div className="flex items-center justify-center space-x-6 pt-4">
-                      <div className="text-center">
-                        <div className="text-lg font-bold text-one-primary-neon font-italian-plate">50K+</div>
-                        <div className="text-xs text-gray-400 font-colfax">Activists</div>
-                      </div>
-                      <div className="w-px h-8 bg-gray-600"></div>
-                      <div className="text-center">
-                        <div className="text-lg font-bold text-one-primary-teal font-italian-plate">190+</div>
-                        <div className="text-xs text-gray-400 font-colfax">Countries</div>
-                      </div>
-                    </div>
+                {/* Corner Decorative Elements */}
+                <div className="absolute top-4 right-4 w-8 h-8 border-t-2 border-r-2 border-one-primary-plum/50 rounded-tr-lg"></div>
+                <div className="absolute bottom-4 left-4 w-8 h-8 border-b-2 border-l-2 border-one-primary-teal/50 rounded-bl-lg"></div>
+
+                {/* Global Impact Badge */}
+                <div className="absolute top-6 left-6 bg-white/95 backdrop-blur-sm rounded-xl p-3 shadow-lg">
+                  <div className="text-center">
+                    <div className="text-lg font-bold text-one-primary-plum font-italian-plate">Global</div>
+                    <div className="text-xs text-gray-600 font-colfax">Impact</div>
                   </div>
                 </div>
 
-                {/* Corner Accents */}
-                <div className="absolute top-4 right-4 w-8 h-8 border-t-2 border-r-2 border-one-primary-plum rounded-tr-lg"></div>
-                <div className="absolute bottom-4 left-4 w-8 h-8 border-b-2 border-l-2 border-one-primary-teal rounded-bl-lg"></div>
+                {/* Stats Overlay */}
+                <div className="absolute bottom-6 right-6 bg-white/95 backdrop-blur-sm rounded-xl p-4 shadow-lg">
+                  <div className="flex items-center space-x-4">
+                    <div className="text-center">
+                      <div className="text-lg font-bold text-one-primary-plum font-italian-plate">190+</div>
+                      <div className="text-xs text-gray-600 font-colfax">Countries</div>
+                    </div>
+                    <div className="w-px h-8 bg-gray-300"></div>
+                    <div className="text-center">
+                      <div className="text-lg font-bold text-one-primary-teal font-italian-plate">50K+</div>
+                      <div className="text-xs text-gray-600 font-colfax">Activists</div>
+                    </div>
+                  </div>
+                </div>
               </div>
-
-              {/* Course Progress Indicator */}
-              {/* <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 bg-white rounded-full px-6 py-3 shadow-lg border border-one-primary-plum/20">
-                <div className="flex items-center space-x-3">
-                  <div className="w-2 h-2 bg-one-primary-neon rounded-full animate-pulse"></div>
-                  <span className="text-sm font-semibold text-one-primary-black font-colfax">Live Learning</span>
-                  <div className="w-2 h-2 bg-one-primary-plum rounded-full animate-pulse delay-500"></div>
-                </div>
-              </div> */}
-
-              {/* Impact Metrics - Minimal and Elegant */}
-              {/* <div className="absolute -top-4 -right-4 bg-one-primary-plum text-white rounded-xl p-3 shadow-lg">
-                <div className="text-center">
-                  <div className="text-sm font-bold font-italian-plate">Real Impact</div>
-                  <div className="text-xs opacity-90 font-colfax">Every Course</div>
-                </div>
-              </div> */}
-
-              {/* <div className="absolute top-1/3 -left-4 bg-white rounded-xl p-3 shadow-lg border border-one-primary-teal/20">
-                <div className="text-center">
-                  <div className="text-lg font-bold text-one-primary-teal font-italian-plate">Learn</div>
-                  <div className="text-xs text-gray-500 font-colfax">→ Act</div>
-                </div>
-              </div> */}
             </div>
           </div>
         </div>
