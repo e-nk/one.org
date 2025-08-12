@@ -288,7 +288,7 @@ export default function Hero() {
                 <div className="absolute bottom-6 right-6 bg-white/95 backdrop-blur-sm rounded-xl p-4 shadow-lg">
                   <div className="flex items-center space-x-4">
                     <div className="text-center">
-                      <div className="text-lg font-bold text-one-primary-plum font-italian-plate">190+</div>
+                      <div className="text-lg font-bold text-one-primary-plum font-italian-plate">20+</div>
                       <div className="text-xs text-gray-600 font-colfax">Countries</div>
                     </div>
                     <div className="w-px h-8 bg-gray-300"></div>
