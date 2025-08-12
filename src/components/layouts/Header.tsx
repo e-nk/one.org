@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { User, ChevronDown, ArrowRight, ExternalLink, Mail, Globe } from 'lucide-react';
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -98,9 +99,7 @@ export default function Header() {
                 href="mailto:support@oneacademy.org"
                 className="flex items-center space-x-1 hover:text-one-primary-neon transition-colors duration-200"
               >
-                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
+                <Mail className="w-3 h-3" />
                 <span>Support</span>
               </a>
               <div className="h-4 w-px bg-white/30"></div>
@@ -109,9 +108,10 @@ export default function Header() {
               <Link 
                 href="https://www.one.org" 
                 target="_blank"
-                className="hover:text-one-primary-neon transition-colors duration-200"
+                className="hover:text-one-primary-neon transition-colors duration-200 flex items-center space-x-1"
               >
-                Visit ONE.org
+                <span>Visit ONE.org</span>
+                <ExternalLink className="w-3 h-3" />
               </Link>
             </div>
           </div>
@@ -197,16 +197,9 @@ export default function Header() {
               >
                 <button className="flex items-center space-x-1 font-colfax font-medium text-base text-one-primary-black hover:text-one-primary-plum transition-all duration-300 group">
                   <span>Get Involved</span>
-                  <svg 
-                    className={`w-4 h-4 transition-transform duration-300 ${
-                      activeDropdown === 'get-involved' ? 'rotate-180' : ''
-                    }`}
-                    fill="none" 
-                    stroke="currentColor" 
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
+                  <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${
+                    activeDropdown === 'get-involved' ? 'rotate-180' : ''
+                  }`} />
                 </button>
 
                 {/* Dropdown Menu */}
@@ -250,9 +243,7 @@ export default function Header() {
                               {item.desc}
                             </div>
                           </div>
-                          <svg className="w-4 h-4 text-gray-400 group-hover:text-one-primary-plum transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                          </svg>
+                          <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-one-primary-plum transition-colors duration-200" />
                         </Link>
                       ))}
                     </div>
@@ -267,24 +258,30 @@ export default function Header() {
                 className="font-colfax font-medium text-base text-one-primary-black hover:text-one-primary-plum transition-all duration-300 group flex items-center space-x-1"
               >
                 <span>One.org</span>
-                <svg className="w-3 h-3 text-gray-400 group-hover:text-one-primary-plum transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
+                <ExternalLink className="w-3 h-3 text-gray-400 group-hover:text-one-primary-plum transition-colors duration-200" />
               </Link>
             </nav>
 
-            {/* Enroll Now Button & Mobile Menu */}
-            <div className="flex items-center space-x-4">
+            {/* Login & Enroll Buttons + Mobile Menu */}
+            <div className="flex items-center space-x-3 sm:space-x-4">
               
-              {/* Enroll Now Button */}
+              {/* Login Button - Desktop Only */}
+              <Link 
+                href="https://online.oneacademy.org/login"
+                target="_blank"
+                className="hidden lg:inline-flex items-center px-4 py-2 lg:px-5 lg:py-2.5 border-2 border-one-primary-plum text-one-primary-plum font-colfax font-semibold rounded-full hover:bg-one-primary-plum hover:text-white transition-all duration-300 group text-sm lg:text-base"
+              >
+                <User className="w-4 h-4 mr-2" />
+                <span>Login</span>
+              </Link>
+
+              {/* Enroll Now Button - Desktop Only */}
               <Link 
                 href="/learn/pathways-to-equity"
                 className="hidden sm:inline-flex items-center px-6 py-3 bg-one-primary-plum text-white font-colfax font-semibold rounded-full hover:bg-one-primary-plum/90 hover:shadow-lg hover:shadow-one-primary-plum/25 transform hover:scale-105 transition-all duration-300 group"
               >
                 <span>Enroll Now</span>
-                <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
+                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
               </Link>
 
               {/* Mobile Menu Button */}
@@ -307,62 +304,123 @@ export default function Header() {
           </div>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Enhanced Mobile Menu */}
         <div className={`lg:hidden overflow-hidden transition-all duration-500 ${
-          isMobileMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
+          isMobileMenuOpen ? 'max-h-[80vh] opacity-100' : 'max-h-0 opacity-0'
         }`}>
-          <div className="bg-white border-t border-gray-100">
-            <div className="px-4 py-6 space-y-4">
+          <div className="bg-white border-t border-gray-100 shadow-lg max-h-[80vh] overflow-y-auto">
+            <div className="px-4 py-6 space-y-6 pb-8">
               
-              <Link href="/" className="block py-3 font-colfax font-medium text-one-primary-black hover:text-one-primary-plum transition-colors duration-200">
-                Home
-              </Link>
-              
-              <Link href="/learn" className="block py-3 font-colfax font-medium text-one-primary-black hover:text-one-primary-plum transition-colors duration-200">
-                Learn
-              </Link>
-              
-              <Link href="/about" className="block py-3 font-colfax font-medium text-one-primary-black hover:text-one-primary-plum transition-colors duration-200">
-                About
-              </Link>
+              {/* Navigation Links */}
+              <div className="space-y-2">
+                <Link 
+                  href="/" 
+                  className={`flex items-center justify-between py-3 px-4 rounded-lg font-colfax font-medium transition-all duration-200 ${
+                    isActivePage('/') 
+                      ? 'bg-one-primary-plum/10 text-one-primary-plum' 
+                      : 'text-one-primary-black hover:bg-gray-50 hover:text-one-primary-plum'
+                  }`}
+                >
+                  <span>Home</span>
+                  {isActivePage('/') && <div className="w-2 h-2 bg-one-primary-plum rounded-full"></div>}
+                </Link>
+                
+                <Link 
+                  href="/learn" 
+                  className={`flex items-center justify-between py-3 px-4 rounded-lg font-colfax font-medium transition-all duration-200 ${
+                    isActivePage('/learn') 
+                      ? 'bg-one-primary-plum/10 text-one-primary-plum' 
+                      : 'text-one-primary-black hover:bg-gray-50 hover:text-one-primary-plum'
+                  }`}
+                >
+                  <span>Learn</span>
+                  {isActivePage('/learn') && <div className="w-2 h-2 bg-one-primary-plum rounded-full"></div>}
+                </Link>
+                
+                <Link 
+                  href="/about" 
+                  className={`flex items-center justify-between py-3 px-4 rounded-lg font-colfax font-medium transition-all duration-200 ${
+                    isActivePage('/about') 
+                      ? 'bg-one-primary-plum/10 text-one-primary-plum' 
+                      : 'text-one-primary-black hover:bg-gray-50 hover:text-one-primary-plum'
+                  }`}
+                >
+                  <span>About</span>
+                  {isActivePage('/about') && <div className="w-2 h-2 bg-one-primary-plum rounded-full"></div>}
+                </Link>
+              </div>
 
-              {/* Mobile Get Involved */}
-              <div className="py-3">
-                <div className="font-colfax font-semibold text-one-primary-plum mb-3">Get Involved</div>
-                <div className="pl-4 space-y-3">
+              {/* Get Involved Section */}
+              <div className="bg-one-primary-plum/5 rounded-xl p-4">
+                <div className="font-colfax font-bold text-one-primary-plum mb-4 flex items-center space-x-2">
+                  <Globe className="w-4 h-4" />
+                  <span>Get Involved</span>
+                </div>
+                <div className="grid grid-cols-1 gap-2">
                   {[
-                    { name: 'Join', href: 'https://www.one.org/get-involved/join/' },
+                    { name: 'Join Community', href: 'https://www.one.org/get-involved/join/' },
                     { name: 'Take Action', href: 'https://www.one.org/get-involved/take-action/' },
-                    { name: 'Your Voice', href: 'https://www.one.org/get-involved/your-voice/' },
-                    { name: 'Become a Youth Ambassador', href: 'https://www.one.org/get-involved/become-a-youth-ambassador/' },
+                    { name: 'Share Your Voice', href: 'https://www.one.org/get-involved/your-voice/' },
+                    { name: 'Youth Ambassador', href: 'https://www.one.org/get-involved/become-a-youth-ambassador/' },
                     { name: 'Partner with Us', href: 'https://www.one.org/get-involved/partner-with-us/' }
                   ].map((item) => (
                     <Link
                       key={item.name}
                       href={item.href}
                       target="_blank"
-                      className="block py-2 font-colfax text-sm text-gray-600 hover:text-one-primary-plum transition-colors duration-200"
+                      className="flex items-center justify-between py-2 px-3 rounded-lg font-colfax text-sm text-gray-700 hover:bg-white hover:text-one-primary-plum transition-all duration-200 group"
                     >
-                      {item.name}
+                      <span>{item.name}</span>
+                      <ExternalLink className="w-3 h-3 text-gray-400 group-hover:text-one-primary-plum transition-colors duration-200" />
                     </Link>
                   ))}
                 </div>
               </div>
 
+              {/* ONE.org Link */}
               <Link 
                 href="https://www.one.org" 
                 target="_blank"
-                className="block py-3 font-colfax font-medium text-one-primary-black hover:text-one-primary-plum transition-colors duration-200"
+                className="flex items-center justify-between py-3 px-4 rounded-lg font-colfax font-medium text-one-primary-black hover:bg-gray-50 hover:text-one-primary-plum transition-all duration-200 group"
               >
-                One.org
+                <span>Visit ONE.org</span>
+                <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-one-primary-plum transition-colors duration-200" />
               </Link>
 
-              <Link 
-                href="/learn/pathways-to-equity"
-                className="inline-flex items-center justify-center w-full px-6 py-3 mt-4 bg-one-primary-plum text-white font-colfax font-semibold rounded-full hover:bg-one-primary-plum/90 transition-all duration-300"
-              >
-                Enroll Now
-              </Link>
+              {/* Mobile Action Buttons */}
+              <div className="space-y-4 pt-4 border-t border-gray-200">
+                
+                {/* Mobile Login Button - Now Visible */}
+                <Link 
+                  href="https://online.oneacademy.org/login"
+                  target="_blank"
+                  className="flex items-center justify-center w-full px-4 py-3 border-2 border-one-primary-plum text-one-primary-plum font-colfax font-semibold rounded-xl hover:bg-one-primary-plum hover:text-white transition-all duration-300 group"
+                >
+                  <User className="w-4 h-4 mr-2" />
+                  <span>Login to Academy</span>
+                  <ExternalLink className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
+                </Link>
+
+                {/* Mobile Enroll Button */}
+                <Link 
+                  href="/learn/pathways-to-equity"
+                  className="flex items-center justify-center w-full px-6 py-3 bg-one-primary-plum text-white font-colfax font-semibold rounded-xl hover:bg-one-primary-plum/90 transition-all duration-300 group"
+                >
+                  <span>Enroll Now</span>
+                  <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
+                </Link>
+              </div>
+
+              {/* Mobile Contact */}
+              <div className="pt-4 border-t border-gray-200 pb-2">
+                <a 
+                  href="mailto:support@oneacademy.org"
+                  className="flex items-center space-x-2 text-sm text-gray-500 hover:text-one-primary-plum transition-colors duration-200"
+                >
+                  <Mail className="w-4 h-4" />
+                  <span>Need help? Contact support</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>
