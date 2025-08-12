@@ -13,7 +13,7 @@ export default function PathwaysEquityHero() {
   }, []);
 
   return (
-    <section className="relative min-h-screen bg-one-primary-plum/20 flex items-center overflow-hidden -mt-7 lg:-mt-54 pt-20 lg:pt-54">
+    <section className="relative min-h-screen bg-one-primary-plum/20 flex items-center overflow-hidden -mt-27 lg:-mt-54 pt-30 lg:pt-24">
       
       {/* Background decorative elements */}
       <div className="absolute inset-0">

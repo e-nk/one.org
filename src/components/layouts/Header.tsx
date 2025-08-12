@@ -278,7 +278,7 @@ export default function Header() {
               
               {/* Enroll Now Button */}
               <Link 
-                href="/learn"
+                href="/learn/pathways-to-equity"
                 className="hidden sm:inline-flex items-center px-6 py-3 bg-one-primary-plum text-white font-colfax font-semibold rounded-full hover:bg-one-primary-plum/90 hover:shadow-lg hover:shadow-one-primary-plum/25 transform hover:scale-105 transition-all duration-300 group"
               >
                 <span>Enroll Now</span>
@@ -358,7 +358,7 @@ export default function Header() {
               </Link>
 
               <Link 
-                href="/learn"
+                href="/learn/pathways-to-equity"
                 className="inline-flex items-center justify-center w-full px-6 py-3 mt-4 bg-one-primary-plum text-white font-colfax font-semibold rounded-full hover:bg-one-primary-plum/90 transition-all duration-300"
               >
                 Enroll Now
