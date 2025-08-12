@@ -12,22 +12,16 @@ import {
   AlertDialogTitle,
   AlertDialogAction,
 } from '@/components/ui/alert-dialog';
-import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
-import { X, Loader2, CheckCircle, Mail, User, Globe } from 'lucide-react';
+import { X, Loader2, CheckCircle, Mail, User, Globe, Sparkles, ArrowRight } from 'lucide-react';
 import { toast } from 'sonner';
 
-// Form validation schema
+// Minimal form validation schema
 const registrationSchema = z.object({
   firstName: z.string().min(1, 'First name is required').max(50, 'First name is too long'),
   lastName: z.string().min(1, 'Last name is required').max(50, 'Last name is too long'),
   email: z.string().email('Please enter a valid email address'),
   country: z.string().min(1, 'Please select your country'),
-  education: z.string().min(1, 'Please select your education level'),
-  career: z.string().min(1, 'Please select your career/profession'),
-  careerOther: z.string().optional(),
-  background: z.string().max(500, 'Background description is too long').optional(),
-  reason: z.string().max(1000, 'Reason is too long').optional(),
   agreeTerms: z.boolean().refine(val => val === true, 'You must agree to the terms to continue')
 });
 
@@ -57,31 +51,6 @@ const countries = [
   "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
 ];
 
-const educationLevels = [
-  "High School",
-  "Undergraduate Degree", 
-  "Postgraduate Degree (Masters/PhD)"
-];
-
-const careerOptions = [
-  "Student",
-  "Teacher/Educator",
-  "Healthcare Professional", 
-  "Business/Finance",
-  "Technology/Engineering",
-  "Legal Professional",
-  "Government/Public Service",
-  "Non-Profit/NGO",
-  "Arts/Creative",
-  "Marketing/Communications",
-  "Research/Academic",
-  "Consultant",
-  "Entrepreneur",
-  "Retired",
-  "Unemployed/Job Seeking",
-  "Other"
-];
-
 interface RegistrationFormProps {
   isOpen: boolean;
   onClose: () => void;
@@ -89,42 +58,32 @@ interface RegistrationFormProps {
 
 export default function RegistrationForm({ isOpen, onClose }: RegistrationFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitProgress, setSubmitProgress] = useState(0);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
-    reset
+    reset,
+    setError
   } = useForm<FormData>({
     resolver: zodResolver(registrationSchema)
   });
 
-  const watchedCareer = watch('career');
   const watchedTerms = watch('agreeTerms');
 
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
-    setSubmitProgress(10);
-    setSubmitError(null);
 
     try {
-      // Prepare submission data
+      // Prepare minimal submission data
       const submissionData = {
         firstName: data.firstName.trim(),
         lastName: data.lastName.trim(),
         email: data.email.trim().toLowerCase(),
-        country: data.country,
-        education: data.education,
-        career: data.career === 'Other' ? data.careerOther?.trim() : data.career,
-        background: data.background?.trim() || '',
-        reason: data.reason?.trim() || ''
+        country: data.country
       };
-
-      setSubmitProgress(30);
 
       // Submit to API
       const response = await fetch('/api/moodle/enroll', {
@@ -135,27 +94,22 @@ export default function RegistrationForm({ isOpen, onClose }: RegistrationFormPr
         body: JSON.stringify(submissionData)
       });
 
-      setSubmitProgress(70);
-
       const result = await response.json();
 
       if (!result.success) {
         throw new Error(result.message || 'Registration failed. Please try again.');
       }
 
-      setSubmitProgress(100);
-
-      // Success - show success state
-      setTimeout(() => {
-        setIsSuccess(true);
-        setIsSubmitting(false);
-      }, 500);
+      // Success
+      setIsSuccess(true);
 
     } catch (error) {
       console.error('Registration error:', error);
-      setSubmitError(error instanceof Error ? error.message : 'An unexpected error occurred');
+      setError('root', {
+        message: error instanceof Error ? error.message : 'An unexpected error occurred'
+      });
+    } finally {
       setIsSubmitting(false);
-      setSubmitProgress(0);
     }
   };
 
@@ -171,349 +125,258 @@ export default function RegistrationForm({ isOpen, onClose }: RegistrationFormPr
     // Reset form and states
     reset();
     setIsSubmitting(false);
-    setSubmitProgress(0);
     setIsSuccess(false);
-    setSubmitError(null);
     onClose();
   };
 
   const renderFormContent = () => {
     if (isSuccess) {
       return (
-        <div className="text-center py-8">
-          <div className="w-20 h-20 bg-one-primary-neon rounded-full flex items-center justify-center mx-auto mb-6">
-            <CheckCircle className="w-10 h-10 text-one-primary-black" />
+        <div className="text-center py-6 sm:py-8">
+          {/* Success Animation */}
+          <div className="relative mb-6 sm:mb-8">
+            <div className="absolute inset-0 w-16 h-16 sm:w-20 sm:h-20 bg-one-primary-plum/20 rounded-full animate-ping mx-auto"></div>
+            <div className="relative w-16 h-16 sm:w-20 sm:h-20 bg-one-primary-plum rounded-full flex items-center justify-center mx-auto shadow-2xl">
+              <CheckCircle className="w-8 h-8 sm:w-10 sm:h-10 text-white" strokeWidth={3} />
+            </div>
+            <div className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 w-6 h-6 sm:w-8 sm:h-8 bg-one-primary-neon rounded-full flex items-center justify-center animate-bounce">
+              <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-one-primary-black" />
+            </div>
           </div>
           
-          <AlertDialogHeader className="space-y-4">
-            <AlertDialogTitle className="text-2xl lg:text-3xl font-bold text-one-primary-black font-italian-plate">
-              Welcome to ONE Academy!
+          <AlertDialogHeader className="space-y-3 sm:space-y-4">
+            <AlertDialogTitle className="text-xl sm:text-2xl font-bold text-one-primary-black font-italian-plate">
+              You're In! 🎉
             </AlertDialogTitle>
-            <AlertDialogDescription className="text-base lg:text-lg text-gray-600 font-colfax leading-relaxed">
-              Your enrollment in "Pathways to Equity" has been completed successfully. 
-              Check your email for login credentials and course access instructions.
+            <AlertDialogDescription className="text-gray-600 font-colfax text-sm sm:text-base leading-relaxed">
+              Welcome to ONE Academy! Check your email for login credentials and start your learning journey.
             </AlertDialogDescription>
           </AlertDialogHeader>
 
-          <div className="bg-one-primary-neon/10 border border-one-primary-neon/20 rounded-xl p-6 mt-6 mb-8">
-            <div className="flex items-center justify-center space-x-3 mb-3">
-              <Mail className="w-5 h-5 text-one-primary-plum" />
-              <span className="font-semibold text-one-primary-black font-colfax">Check Your Email</span>
+          <div className="bg-one-primary-neon/10 border border-one-primary-neon/30 rounded-xl p-3 sm:p-4 mt-4 sm:mt-6 mb-6 sm:mb-8">
+            <div className="flex items-center justify-center space-x-2 text-one-primary-plum font-semibold font-colfax">
+              <Mail className="w-4 h-4" />
+              <span className="text-sm">Login details sent to your email</span>
             </div>
-            <p className="text-sm text-gray-600 font-colfax">
-              We've sent you login credentials and next steps to get started with your learning journey.
-            </p>
           </div>
 
           <AlertDialogAction
             onClick={handleClose}
-            className="bg-one-primary-plum hover:bg-one-primary-plum/90 text-white font-semibold px-8 py-3 rounded-xl font-colfax"
+            className="bg-one-primary-plum hover:bg-one-primary-plum/90 text-white font-bold px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl font-colfax transform hover:scale-105 transition-all duration-200 shadow-lg text-sm sm:text-base"
           >
             Continue
+            <ArrowRight className="ml-2 w-3 h-3 sm:w-4 sm:h-4" />
           </AlertDialogAction>
         </div>
       );
     }
 
     return (
-      <div>
-        <AlertDialogHeader className="pb-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <AlertDialogTitle className="text-xl lg:text-2xl font-bold text-one-primary-black font-italian-plate">
-                Join ONE Academy
-              </AlertDialogTitle>
-              <AlertDialogDescription className="text-gray-600 font-colfax mt-2">
-                Enroll in "Pathways to Equity" - Free Course
-              </AlertDialogDescription>
-            </div>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleClose}
-              className="h-8 w-8 p-0"
-              disabled={isSubmitting}
-            >
-              <X className="h-4 w-4" />
-            </Button>
+      <div className="relative">
+        {/* Decorative Background - hidden on mobile for cleaner look */}
+        <div className="hidden sm:block absolute -top-20 -right-20 w-40 h-40 bg-one-primary-neon/5 rounded-full blur-3xl"></div>
+        <div className="hidden sm:block absolute -bottom-10 -left-10 w-32 h-32 bg-one-primary-plum/8 rounded-full blur-2xl"></div>
+        
+        {/* Header - Compact on mobile */}
+        <div className="relative text-center mb-5 sm:mb-8">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleClose}
+            className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 h-7 w-7 sm:h-8 sm:w-8 p-0 hover:bg-gray-100 rounded-full z-10"
+            disabled={isSubmitting}
+          >
+            <X className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+          </Button>
+          
+          <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-one-primary-plum via-one-primary-teal to-one-primary-neon rounded-xl sm:rounded-2xl flex items-center justify-center mx-auto mb-3 sm:mb-4 shadow-xl">
+            <Sparkles className="w-6 h-6 sm:w-8 sm:h-8 text-white" strokeWidth={2.5} />
           </div>
-        </AlertDialogHeader>
-
-        {/* Progress Bar - Only show when submitting */}
-        {isSubmitting && (
-          <div className="mb-6">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-one-primary-plum font-colfax">
-                Creating your account...
-              </span>
-              <span className="text-sm text-gray-500">{submitProgress}%</span>
-            </div>
-            <Progress value={submitProgress} className="h-2" />
-          </div>
-        )}
+          
+          <AlertDialogTitle className="text-lg sm:text-2xl font-bold text-one-primary-black font-italian-plate mb-1 sm:mb-2 leading-tight">
+            Join ONE Academy
+          </AlertDialogTitle>
+          <AlertDialogDescription className="text-gray-600 font-colfax text-xs sm:text-base">
+            Start "Pathways to Equity" — completely free
+          </AlertDialogDescription>
+        </div>
 
         {/* Error Message */}
-        {submitError && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-            <p className="text-red-600 text-sm font-colfax">{submitError}</p>
+        {errors.root && (
+          <div className="bg-red-50 border border-red-200 rounded-xl p-3 sm:p-4 mb-4 sm:mb-6">
+            <div className="flex items-center space-x-2 sm:space-x-3">
+              <div className="w-6 h-6 sm:w-8 sm:h-8 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
+                <X className="w-3 h-3 sm:w-4 sm:h-4 text-red-600" />
+              </div>
+              <p className="text-red-700 font-colfax text-xs sm:text-sm">{errors.root.message}</p>
+            </div>
           </div>
         )}
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-3.5 sm:space-y-5">
           {/* Name Fields */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-semibold text-one-primary-black mb-2 font-colfax">
-                First Name *
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+            <div className="space-y-1 sm:space-y-2">
+              <label className="block text-xs sm:text-sm font-semibold text-one-primary-black font-colfax">
+                First Name
               </label>
-              <div className="relative">
-                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <div className="relative group">
+                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-400 transition-colors group-focus-within:text-one-primary-plum" />
                 <input
                   {...register('firstName')}
                   type="text"
-                  className={`w-full pl-10 pr-4 py-3 border-2 rounded-xl font-colfax transition-colors focus:outline-none focus:ring-2 focus:ring-one-primary-neon/20 ${
+                  className={`w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2.5 sm:py-3 border rounded-lg sm:rounded-xl font-colfax text-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-one-primary-plum/20 placeholder:text-gray-400 ${
                     errors.firstName 
-                      ? 'border-red-500 bg-red-50' 
-                      : 'border-gray-200 focus:border-one-primary-teal'
+                      ? 'border-red-300 bg-red-50 focus:border-red-400' 
+                      : 'border-gray-200 focus:border-one-primary-plum bg-white hover:border-gray-300'
                   }`}
-                  placeholder="Enter your first name"
+                  placeholder="First name"
                   disabled={isSubmitting}
                 />
               </div>
               {errors.firstName && (
-                <p className="mt-1 text-sm text-red-600 font-colfax">{errors.firstName.message}</p>
+                <p className="text-xs text-red-600 font-colfax">{errors.firstName.message}</p>
               )}
             </div>
 
-            <div>
-              <label className="block text-sm font-semibold text-one-primary-black mb-2 font-colfax">
-                Last Name *
+            <div className="space-y-1 sm:space-y-2">
+              <label className="block text-xs sm:text-sm font-semibold text-one-primary-black font-colfax">
+                Last Name
               </label>
-              <div className="relative">
-                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <div className="relative group">
+                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-400 transition-colors group-focus-within:text-one-primary-plum" />
                 <input
                   {...register('lastName')}
                   type="text"
-                  className={`w-full pl-10 pr-4 py-3 border-2 rounded-xl font-colfax transition-colors focus:outline-none focus:ring-2 focus:ring-one-primary-neon/20 ${
+                  className={`w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2.5 sm:py-3 border rounded-lg sm:rounded-xl font-colfax text-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-one-primary-plum/20 placeholder:text-gray-400 ${
                     errors.lastName 
-                      ? 'border-red-500 bg-red-50' 
-                      : 'border-gray-200 focus:border-one-primary-teal'
+                      ? 'border-red-300 bg-red-50 focus:border-red-400' 
+                      : 'border-gray-200 focus:border-one-primary-plum bg-white hover:border-gray-300'
                   }`}
-                  placeholder="Enter your last name"
+                  placeholder="Last name"
                   disabled={isSubmitting}
                 />
               </div>
               {errors.lastName && (
-                <p className="mt-1 text-sm text-red-600 font-colfax">{errors.lastName.message}</p>
+                <p className="text-xs text-red-600 font-colfax">{errors.lastName.message}</p>
               )}
             </div>
           </div>
 
           {/* Email */}
-          <div>
-            <label className="block text-sm font-semibold text-one-primary-black mb-2 font-colfax">
-              Email Address *
+          <div className="space-y-1 sm:space-y-2">
+            <label className="block text-xs sm:text-sm font-semibold text-one-primary-black font-colfax">
+              Email Address
             </label>
-            <div className="relative">
-              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <div className="relative group">
+              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-400 transition-colors group-focus-within:text-one-primary-plum" />
               <input
                 {...register('email')}
                 type="email"
-                className={`w-full pl-10 pr-4 py-3 border-2 rounded-xl font-colfax transition-colors focus:outline-none focus:ring-2 focus:ring-one-primary-neon/20 ${
+                className={`w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2.5 sm:py-3 border rounded-lg sm:rounded-xl font-colfax text-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-one-primary-plum/20 placeholder:text-gray-400 ${
                   errors.email 
-                    ? 'border-red-500 bg-red-50' 
-                    : 'border-gray-200 focus:border-one-primary-teal'
+                    ? 'border-red-300 bg-red-50 focus:border-red-400' 
+                    : 'border-gray-200 focus:border-one-primary-plum bg-white hover:border-gray-300'
                 }`}
-                placeholder="name@example.com"
+                placeholder="your@email.com"
                 disabled={isSubmitting}
               />
             </div>
-            {errors.email && (
-              <p className="mt-1 text-sm text-red-600 font-colfax">{errors.email.message}</p>
+            {errors.email ? (
+              <p className="text-xs text-red-600 font-colfax">{errors.email.message}</p>
+            ) : (
+              <p className="text-xs text-gray-500 font-colfax">
+                Login credentials sent here
+              </p>
             )}
-            <p className="mt-1 text-xs text-gray-500 font-colfax">
-              We'll send login details to this email
-            </p>
           </div>
 
           {/* Country */}
-          <div>
-            <label className="block text-sm font-semibold text-one-primary-black mb-2 font-colfax">
-              Country *
+          <div className="space-y-1 sm:space-y-2">
+            <label className="block text-xs sm:text-sm font-semibold text-one-primary-black font-colfax">
+              Country
             </label>
-            <div className="relative">
-              <Globe className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <div className="relative group">
+              <Globe className="absolute left-3 top-1/2 transform -translate-y-1/2 w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-400 transition-colors group-focus-within:text-one-primary-plum" />
               <select
                 {...register('country')}
-                className={`w-full pl-10 pr-4 py-3 border-2 rounded-xl font-colfax transition-colors focus:outline-none focus:ring-2 focus:ring-one-primary-neon/20 bg-white ${
+                className={`w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2.5 sm:py-3 border rounded-lg sm:rounded-xl font-colfax text-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-one-primary-plum/20 bg-white cursor-pointer ${
                   errors.country 
-                    ? 'border-red-500 bg-red-50' 
-                    : 'border-gray-200 focus:border-one-primary-teal'
+                    ? 'border-red-300 bg-red-50 focus:border-red-400' 
+                    : 'border-gray-200 focus:border-one-primary-plum hover:border-gray-300'
                 }`}
                 disabled={isSubmitting}
               >
-                <option value="">Select your country</option>
+                <option value="" className="text-gray-400">Select your country</option>
                 {countries.map((country) => (
-                  <option key={country} value={country}>
+                  <option key={country} value={country} className="text-gray-900">
                     {country}
                   </option>
                 ))}
               </select>
             </div>
             {errors.country && (
-              <p className="mt-1 text-sm text-red-600 font-colfax">{errors.country.message}</p>
+              <p className="text-xs text-red-600 font-colfax">{errors.country.message}</p>
             )}
           </div>
 
-          {/* Education & Career Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-semibold text-one-primary-black mb-2 font-colfax">
-                Education Level *
-              </label>
-              <select
-                {...register('education')}
-                className={`w-full px-4 py-3 border-2 rounded-xl font-colfax transition-colors focus:outline-none focus:ring-2 focus:ring-one-primary-neon/20 bg-white ${
-                  errors.education 
-                    ? 'border-red-500 bg-red-50' 
-                    : 'border-gray-200 focus:border-one-primary-teal'
-                }`}
-                disabled={isSubmitting}
-              >
-                <option value="">Select education level</option>
-                {educationLevels.map((level) => (
-                  <option key={level} value={level}>
-                    {level}
-                  </option>
-                ))}
-              </select>
-              {errors.education && (
-                <p className="mt-1 text-sm text-red-600 font-colfax">{errors.education.message}</p>
-              )}
-            </div>
-
-            <div>
-              <label className="block text-sm font-semibold text-one-primary-black mb-2 font-colfax">
-                Career/Profession *
-              </label>
-              <select
-                {...register('career')}
-                className={`w-full px-4 py-3 border-2 rounded-xl font-colfax transition-colors focus:outline-none focus:ring-2 focus:ring-one-primary-neon/20 bg-white ${
-                  errors.career 
-                    ? 'border-red-500 bg-red-50' 
-                    : 'border-gray-200 focus:border-one-primary-teal'
-                }`}
-                disabled={isSubmitting}
-              >
-                <option value="">Select career/profession</option>
-                {careerOptions.map((career) => (
-                  <option key={career} value={career}>
-                    {career}
-                  </option>
-                ))}
-              </select>
-              {errors.career && (
-                <p className="mt-1 text-sm text-red-600 font-colfax">{errors.career.message}</p>
-              )}
+          {/* Terms Agreement - More compact on mobile */}
+          <div className="relative">
+            <div className="flex items-start space-x-2.5 sm:space-x-3 p-3 sm:p-4 bg-gradient-to-r from-gray-50 to-one-primary-plum/5 border border-gray-200 rounded-lg sm:rounded-xl hover:border-one-primary-plum/30 transition-colors duration-200">
+              <div className="flex items-center h-4 sm:h-5 mt-0.5">
+                <input
+                  {...register('agreeTerms')}
+                  type="checkbox"
+                  className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-one-primary-plum border-gray-300 rounded focus:ring-one-primary-plum focus:ring-2 transition-all duration-200"
+                  disabled={isSubmitting}
+                />
+              </div>
+              <div className="text-xs sm:text-sm font-colfax leading-relaxed">
+                <label className={`cursor-pointer block ${errors.agreeTerms ? 'text-red-600' : 'text-gray-700'}`}>
+                  I agree to the{' '}
+                  <a 
+                    href="/terms" 
+                    target="_blank" 
+                    className="text-one-primary-plum hover:text-one-primary-teal font-semibold underline decoration-2 underline-offset-2 hover:underline-offset-4 transition-all duration-200"
+                  >
+                    Terms
+                  </a>{' '}
+                  and{' '}
+                  <a 
+                    href="/privacy" 
+                    target="_blank" 
+                    className="text-one-primary-plum hover:text-one-primary-teal font-semibold underline decoration-2 underline-offset-2 hover:underline-offset-4 transition-all duration-200"
+                  >
+                    Privacy Policy
+                  </a>
+                </label>
+                {errors.agreeTerms && (
+                  <p className="mt-1 text-red-600 text-xs font-medium">{errors.agreeTerms.message}</p>
+                )}
+              </div>
             </div>
           </div>
 
-          {/* Career Other Input */}
-          {watchedCareer === 'Other' && (
-            <div>
-              <label className="block text-sm font-semibold text-one-primary-black mb-2 font-colfax">
-                Please specify your career/profession *
-              </label>
-              <input
-                {...register('careerOther')}
-                type="text"
-                className={`w-full px-4 py-3 border-2 rounded-xl font-colfax transition-colors focus:outline-none focus:ring-2 focus:ring-one-primary-neon/20 ${
-                  errors.careerOther 
-                    ? 'border-red-500 bg-red-50' 
-                    : 'border-gray-200 focus:border-one-primary-teal'
-                }`}
-                placeholder="Enter your career/profession"
-                disabled={isSubmitting}
-              />
-              {errors.careerOther && (
-                <p className="mt-1 text-sm text-red-600 font-colfax">{errors.careerOther.message}</p>
+          {/* Submit Button - Compact on mobile */}
+          <div className="pt-1 sm:pt-2">
+            <Button
+              type="submit"
+              disabled={isSubmitting || !watchedTerms}
+              className="w-full h-10 sm:h-12 bg-one-primary-plum hover:bg-one-primary-black text-white font-bold rounded-lg sm:rounded-xl text-sm sm:text-base font-colfax transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] group"
+            >
+              {isSubmitting ? (
+                <div className="flex items-center justify-center">
+                  <Loader2 className="animate-spin mr-2 h-4 w-4 sm:h-5 sm:w-5" />
+                  <span>Creating Account...</span>
+                </div>
+              ) : (
+                <div className="flex items-center justify-center">
+                  <span>Start Learning Free</span>
+                  <ArrowRight className="ml-2 h-3.5 w-3.5 sm:h-4 sm:w-4 transform group-hover:translate-x-1 transition-transform duration-200" />
+                </div>
               )}
-            </div>
-          )}
-
-          {/* Optional Fields */}
-          <div>
-            <label className="block text-sm font-semibold text-one-primary-black mb-2 font-colfax">
-              Additional Background <span className="text-gray-500 font-normal">(Optional)</span>
-            </label>
-            <input
-              {...register('background')}
-              type="text"
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl font-colfax transition-colors focus:outline-none focus:ring-2 focus:ring-one-primary-neon/20 focus:border-one-primary-teal"
-              placeholder="Any additional professional background"
-              disabled={isSubmitting}
-            />
-            {errors.background && (
-              <p className="mt-1 text-sm text-red-600 font-colfax">{errors.background.message}</p>
-            )}
+            </Button>
           </div>
-
-          <div>
-            <label className="block text-sm font-semibold text-one-primary-black mb-2 font-colfax">
-              Why are you interested in this course? <span className="text-gray-500 font-normal">(Optional)</span>
-            </label>
-            <textarea
-              {...register('reason')}
-              rows={3}
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl font-colfax transition-colors focus:outline-none focus:ring-2 focus:ring-one-primary-neon/20 focus:border-one-primary-teal resize-none"
-              placeholder="Tell us what motivated you to join this course"
-              disabled={isSubmitting}
-            />
-            {errors.reason && (
-              <p className="mt-1 text-sm text-red-600 font-colfax">{errors.reason.message}</p>
-            )}
-          </div>
-
-          {/* Terms Agreement */}
-          <div className="flex items-start space-x-3 p-4 bg-gray-50 rounded-xl">
-            <input
-              {...register('agreeTerms')}
-              type="checkbox"
-              className="mt-0.5 h-4 w-4 text-one-primary-neon border-gray-300 rounded focus:ring-one-primary-neon"
-              disabled={isSubmitting}
-            />
-            <div className="text-sm font-colfax">
-              <label className={`cursor-pointer ${errors.agreeTerms ? 'text-red-600' : 'text-gray-700'}`}>
-                I agree to the{' '}
-                <a href="/terms" target="_blank" className="text-one-primary-teal hover:underline font-semibold">
-                  Terms of Service
-                </a>{' '}
-                and{' '}
-                <a href="/privacy" target="_blank" className="text-one-primary-teal hover:underline font-semibold">
-                  Privacy Policy
-                </a>
-              </label>
-              {errors.agreeTerms && (
-                <p className="mt-1 text-red-600">{errors.agreeTerms.message}</p>
-              )}
-            </div>
-          </div>
-
-          {/* Submit Button */}
-          <Button
-            type="submit"
-            disabled={isSubmitting || !watchedTerms}
-            className="w-full py-4 bg-one-primary-plum hover:bg-one-primary-plum/90 text-white font-semibold rounded-xl text-base font-colfax transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isSubmitting ? (
-              <>
-                <Loader2 className="animate-spin mr-2 h-4 w-4" />
-                Creating Account...
-              </>
-            ) : (
-              'Enroll Now - Free'
-            )}
-          </Button>
         </form>
       </div>
     );
@@ -521,9 +384,11 @@ export default function RegistrationForm({ isOpen, onClose }: RegistrationFormPr
 
   return (
     <AlertDialog open={isOpen} onOpenChange={() => !isSubmitting && handleClose()}>
-      <AlertDialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-0">
-        <div className="p-6">
-          {renderFormContent()}
+      <AlertDialogContent className="max-w-md w-[90vw] sm:w-[95vw] max-h-[90vh] p-0 border-0 shadow-2xl bg-transparent overflow-y-auto">
+        <div className="bg-white rounded-xl sm:rounded-2xl overflow-hidden border border-gray-100">
+          <div className="p-4 sm:p-6 lg:p-8">
+            {renderFormContent()}
+          </div>
         </div>
       </AlertDialogContent>
     </AlertDialog>

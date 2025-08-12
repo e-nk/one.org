@@ -14,19 +14,15 @@ export async function POST(request: NextRequest) {
       firstName,
       lastName,
       email,
-      country,
-      education,
-      career,
-      background,
-      reason
+      country
     } = data;
     
     // Validate required fields
-    if (!firstName || !lastName || !email || !country || !education || !career) {
+    if (!firstName || !lastName || !email || !country) {
       return NextResponse.json(
         { 
           success: false, 
-          message: 'Missing required fields. Please check firstName, lastName, email, country, education, and career.' 
+          message: 'Missing required fields. Please check firstName, lastName, email, and country.' 
         },
         { status: 400 }
       );
@@ -146,15 +142,11 @@ export async function POST(request: NextRequest) {
       throw new Error(`Moodle course enrollment failed: ${enrollResponse.data.message}`);
     }
     
-    // Step 3: Log additional enrollment data for analytics
-    console.log('Additional enrollment data stored:', {
+    // Step 3: Log enrollment data for analytics (minimal data now)
+    console.log('Enrollment data stored:', {
       userId,
       email,
       country,
-      education,
-      career,
-      background: background || 'Not provided',
-      reason: reason || 'Not provided',
       enrollmentDate: new Date().toISOString()
     });
     
