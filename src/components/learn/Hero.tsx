@@ -7,6 +7,7 @@ import Container from '../layouts/Container';
 export default function LearnHero() {
   const [currentText, setCurrentText] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
+  const [animationPhase, setAnimationPhase] = useState(0);
 
   const textRotations = [
     { main: 'Challenge Everything', sub: 'Question • Discover • Transform Understanding' },
@@ -26,12 +27,50 @@ export default function LearnHero() {
   useEffect(() => {
     setIsVisible(true);
     setCurrentText(0);
+    
+    // Start the dot animation sequence
+    const animationTimer = setTimeout(() => {
+      setAnimationPhase(1);
+    }, 1000);
+
+    return () => clearTimeout(animationTimer);
   }, []);
+
+  // Define dot positions for each letter
+  const letterO = [
+    { x: 15, y: 25 }, { x: 25, y: 20 }, { x: 35, y: 25 },
+    { x: 12, y: 35 }, { x: 38, y: 35 },
+    { x: 12, y: 45 }, { x: 38, y: 45 },
+    { x: 12, y: 55 }, { x: 38, y: 55 },
+    { x: 15, y: 65 }, { x: 25, y: 70 }, { x: 35, y: 65 }
+  ];
+
+  const letterN = [
+    { x: 55, y: 25 }, { x: 75, y: 25 },
+    { x: 55, y: 35 }, { x: 60, y: 35 }, { x: 75, y: 35 },
+    { x: 55, y: 45 }, { x: 65, y: 45 }, { x: 75, y: 45 },
+    { x: 55, y: 55 }, { x: 70, y: 55 }, { x: 75, y: 55 },
+    { x: 55, y: 65 }, { x: 75, y: 65 }
+  ];
+
+  const letterE = [
+    { x: 95, y: 25 }, { x: 105, y: 25 }, { x: 115, y: 25 },
+    { x: 95, y: 35 },
+    { x: 95, y: 45 }, { x: 105, y: 45 },
+    { x: 95, y: 55 },
+    { x: 95, y: 65 }, { x: 105, y: 65 }, { x: 115, y: 65 }
+  ];
+
+  // Scattered starting positions for dots
+  const getRandomStartPosition = () => ({
+    x: Math.random() * 200 + 50,
+    y: Math.random() * 150 + 100
+  });
 
   return (
     <section className="relative min-h-screen bg-one-secondary-fuchsia/20 flex items-center overflow-hidden -mt-27 lg:-mt-54 pt-20 lg:pt-54">
       
-      {/* Background decorative elements - Different color scheme */}
+      {/* Background decorative elements */}
       <div className="absolute inset-0">
         <div className="absolute top-20 right-10 w-64 h-64 bg-one-secondary-fuchsia/12 rounded-full blur-3xl"></div>
         <div className="absolute bottom-20 left-10 w-96 h-96 bg-one-secondary-peach/15 rounded-full blur-3xl"></div>
@@ -155,106 +194,147 @@ export default function LearnHero() {
             </div>
           </div>
 
-          {/* Visual Side - Enhanced Knowledge/Learning Theme */}
+          {/* Visual Side - Decrypted Text Animation */}
           <div className={`hidden lg:block relative transform transition-all duration-1000 delay-300 ${
             isVisible ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0'
           }`}>
             <div className="relative">
               
-              {/* Main Visual Container */}
-              <div className="aspect-[4/3] rounded-2xl bg-white border-2 border-one-primary-plum/20 overflow-hidden relative shadow-xl">
+              {/* Main Container with Decrypted Text */}
+              <div className="aspect-[4/3] rounded-2xl bg-gradient-to-br from-one-primary-black via-one-primary-black/95 to-one-primary-black overflow-hidden relative shadow-xl border border-one-primary-plum/30">
                 
-                {/* Animated Knowledge Grid Background */}
-                <div className="absolute inset-0 opacity-10">
-                  <svg className="w-full h-full" viewBox="0 0 400 300" fill="none">
-                    {/* Grid Pattern */}
-                    <defs>
-                      <pattern id="learningGrid" width="30" height="30" patternUnits="userSpaceOnUse">
-                        <path d="M 30 0 L 0 0 0 30" fill="none" stroke="currentColor" strokeWidth="0.5" className="text-one-primary-plum"/>
-                      </pattern>
-                    </defs>
-                    <rect width="100%" height="100%" fill="url(#learningGrid)" />
-                    
-                    {/* Floating Learning Icons */}
-                    <circle cx="80" cy="60" r="15" className="fill-one-secondary-peach opacity-20" />
-                    <circle cx="320" cy="90" r="12" className="fill-one-secondary-fuchsia opacity-25" />
-                    <circle cx="150" cy="180" r="18" className="fill-one-primary-teal opacity-15" />
-                    <circle cx="280" cy="220" r="14" className="fill-one-primary-plum opacity-20" />
-                  </svg>
+                {/* Matrix-style background effect */}
+                <div className="absolute inset-0 opacity-20">
+                  <div className="absolute inset-0" style={{
+                    backgroundImage: `linear-gradient(transparent 0%, rgba(116, 88, 138, 0.1) 50%, transparent 100%)`,
+                    backgroundSize: '100% 2px',
+                    animation: 'scan 3s linear infinite'
+                  }}></div>
                 </div>
 
-                {/* Floating Question/Exclamation Marks */}
-                <div className="absolute top-6 left-6 text-2xl text-one-secondary-fuchsia opacity-40 animate-bounce">?</div>
-                <div className="absolute top-12 right-12 text-3xl text-one-secondary-peach opacity-35 animate-pulse">!</div>
-                <div className="absolute bottom-16 left-12 text-2xl text-one-primary-teal opacity-30 animate-bounce delay-1000">?</div>
-                <div className="absolute bottom-8 right-8 text-2xl text-one-primary-plum opacity-40 animate-pulse delay-500">!</div>
+                {/* Decrypted Text Content */}
+                <div className="absolute inset-0 p-6 flex flex-col justify-center font-mono text-green-400">
+                  
+                  {/* Terminal Header */}
+                  <div className="text-xs mb-4 text-one-primary-neon">
+                    <span className="animate-pulse">█</span> DECRYPTING GLOBAL MYTHS...
+                  </div>
 
-                {/* Central Content */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center space-y-6">
+                  {/* Main Decrypted Messages */}
+                  <div className="space-y-3 text-sm leading-relaxed">
                     
-                    {/* Main Icon with Pulsing Ring */}
-                    <div className="relative">
-                      <div className="absolute inset-0 w-20 h-20 bg-one-primary-plum/20 rounded-full animate-ping"></div>
-                      <div className="relative w-20 h-20 bg-one-primary-plum rounded-full flex items-center justify-center mx-auto">
-                        <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                        </svg>
-                      </div>
-                      <div className="absolute -top-1 -right-1 w-6 h-6 bg-one-secondary-fuchsia rounded-full flex items-center justify-center animate-pulse">
-                        <span className="text-xs font-bold text-white">!</span>
+                    {/* Line 1 */}
+                    <div className="group">
+                      <span className="text-red-400">[MYTH]</span>
+                      <span className="ml-2 line-through text-gray-500">Poverty is inevitable</span>
+                      <div className="text-one-primary-neon mt-1 ml-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                        → FALSE: Extreme poverty has decreased by 80% since 1990
                       </div>
                     </div>
 
-                    {/* Text Content */}
-                    <div className="space-y-3">
-                      <h3 className="text-xl font-bold text-one-primary-plum font-italian-plate">
-                        Question Everything
-                      </h3>
-                      <p className="text-sm text-gray-600 font-colfax max-w-xs mx-auto">
-                        Challenge assumptions and discover the truth behind global issues
-                      </p>
+                    {/* Line 2 */}
+                    <div className="group delay-500">
+                      <span className="text-red-400">[MYTH]</span>
+                      <span className="ml-2 line-through text-gray-500">Climate change is natural</span>
+                      <div className="text-one-primary-neon mt-1 ml-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                        → FALSE: 97% of scientists confirm human cause
+                      </div>
                     </div>
 
-                    {/* Learning Stats */}
-                    <div className="flex items-center justify-center space-x-6 pt-4">
-                      <div className="text-center">
-                        <div className="text-lg font-bold text-one-secondary-peach font-italian-plate">10+</div>
-                        <div className="text-xs text-gray-500 font-colfax">Myths</div>
-                      </div>
-                      <div className="w-px h-8 bg-gray-300"></div>
-                      <div className="text-center">
-                        <div className="text-lg font-bold text-one-secondary-fuchsia font-italian-plate">5min</div>
-                        <div className="text-xs text-gray-500 font-colfax">Each</div>
+                    {/* Line 3 */}
+                    <div className="group delay-1000">
+                      <span className="text-red-400">[MYTH]</span>
+                      <span className="ml-2 line-through text-gray-500">Aid doesn't work</span>
+                      <div className="text-one-primary-neon mt-1 ml-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                        → FALSE: Vaccines alone saved 20M+ lives
                       </div>
                     </div>
+
+                    {/* Line 4 */}
+                    <div className="group delay-1500">
+                      <span className="text-red-400">[MYTH]</span>
+                      <span className="ml-2 line-through text-gray-500">Inequality is getting worse</span>
+                      <div className="text-one-primary-neon mt-1 ml-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                        → COMPLEX: Global inequality down, local up
+                      </div>
+                    </div>
+
+                    {/* Line 5 */}
+                    <div className="group delay-2000">
+                      <span className="text-red-400">[MYTH]</span>
+                      <span className="ml-2 line-through text-gray-500">Population explosion</span>
+                      <div className="text-one-primary-neon mt-1 ml-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                        → FALSE: Growth rate peaked in 1960s
+                      </div>
+                    </div>
+
+                  </div>
+
+                  {/* Status Bar */}
+                  <div className="mt-6 pt-4 border-t border-one-primary-plum/30">
+                    <div className="flex items-center justify-between text-xs">
+                      <div className="text-one-primary-neon">
+                        <span className="animate-pulse">●</span> MYTHS DECODED: 5/10
+                      </div>
+                      <div className="text-one-secondary-fuchsia">
+                        TRUTH LEVEL: 
+                        <span className="ml-2 text-white font-bold">VERIFIED</span>
+                      </div>
+                    </div>
+                    
+                    {/* Progress Bar */}
+                    <div className="mt-2 w-full bg-gray-700 rounded-full h-1">
+                      <div 
+                        className="bg-gradient-to-r from-one-primary-neon to-one-secondary-fuchsia h-1 rounded-full transition-all duration-3000"
+                        style={{ width: animationPhase >= 1 ? '50%' : '0%' }}
+                      ></div>
+                    </div>
+                  </div>
+
+                  {/* Bottom Command */}
+                  <div className="mt-4 text-xs text-gray-400">
+                    <span className="text-one-primary-plum">oneacademy@global:~$</span>
+                    <span className="ml-2">learn --challenge-myths --reveal-truth</span>
+                    <span className="animate-pulse ml-1">█</span>
                   </div>
                 </div>
 
-                {/* Corner Learning Elements */}
-                <div className="absolute top-4 right-4 w-8 h-8 border-t-2 border-r-2 border-one-secondary-fuchsia rounded-tr-lg"></div>
-                <div className="absolute bottom-4 left-4 w-8 h-8 border-b-2 border-l-2 border-one-secondary-peach rounded-bl-lg"></div>
-              </div>
+                {/* Glitch Effects */}
+                <div className="absolute top-4 right-4 text-one-primary-neon text-xs font-mono animate-pulse">
+                  [DECRYPTING...]
+                </div>
+                
+                <div className="absolute bottom-4 left-4 text-one-secondary-fuchsia text-xs font-mono">
+                  SYSTEM: TRUTH_REVEALED.exe
+                </div>
 
-              {/* Floating Learning Cards */}
-              <div className="absolute -top-3 -left-3 bg-white rounded-xl p-3 shadow-lg border border-one-secondary-peach/20 animate-bounce delay-1000">
-                <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 bg-one-secondary-peach rounded-full"></div>
-                  <span className="text-xs font-semibold text-gray-700 font-colfax">Myth Busted</span>
+                {/* Scanning Line */}
+                <div className="absolute inset-0 pointer-events-none">
+                  <div 
+                    className="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-one-primary-neon to-transparent opacity-60"
+                    style={{
+                      animation: 'scanLine 4s linear infinite'
+                    }}
+                  ></div>
                 </div>
               </div>
 
-              <div className="absolute -bottom-3 -right-3 bg-white rounded-xl p-3 shadow-lg border border-one-secondary-fuchsia/20 animate-bounce delay-1500">
-                <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 bg-one-secondary-fuchsia rounded-full"></div>
-                  <span className="text-xs font-semibold text-gray-700 font-colfax">Truth Revealed</span>
+              {/* Terminal-style Floating Cards */}
+              <div className="absolute -top-3 -left-3 bg-one-primary-black border border-one-primary-neon rounded-lg p-2 shadow-lg animate-pulse">
+                <div className="text-xs font-mono text-one-primary-neon">
+                  MYTH_BUSTER.exe
                 </div>
               </div>
 
-              <div className="absolute top-1/3 -right-4 bg-white rounded-xl p-2 shadow-lg border border-one-primary-teal/20 animate-pulse">
-                <div className="text-center">
-                  <div className="text-sm font-bold text-one-primary-teal font-italian-plate">?→!</div>
-                  <div className="text-xs text-gray-500 font-colfax">Learn</div>
+              <div className="absolute -bottom-3 -right-3 bg-one-primary-black border border-one-secondary-fuchsia rounded-lg p-2 shadow-lg">
+                <div className="text-xs font-mono text-one-secondary-fuchsia">
+                  STATUS: ONLINE
+                </div>
+              </div>
+
+              <div className="absolute top-1/3 -right-4 bg-one-primary-black border border-one-primary-teal rounded-lg p-2 shadow-lg animate-bounce">
+                <div className="text-xs font-mono text-one-primary-teal text-center">
+                  TRUTH<br/>LEVEL
                 </div>
               </div>
             </div>
@@ -262,28 +342,18 @@ export default function LearnHero() {
         </div>
       </Container>
 
-      {/* Learning Categories Banner */}
-      {/* <div className="hidden lg:block absolute bottom-8 left-0 right-0">
-        <Container>
-          <div className="bg-white/90 backdrop-blur-sm rounded-xl p-4 shadow-lg border border-one-primary-plum/10">
-            <div className="flex flex-wrap items-center justify-center gap-4 text-center">
-              <span className="text-sm font-medium text-one-primary-black font-colfax">Explore Topics:</span>
-              {[
-                'Global Poverty Myths',
-                'Climate Misconceptions', 
-                'Health System Truths',
-                'Economic Justice Facts',
-                'Social Change Reality'
-              ].map((topic, index) => (
-                <div key={topic} className="flex items-center">
-                  <span className="text-sm font-semibold text-one-primary-plum font-colfax">{topic}</span>
-                  {index < 4 && <div className="w-1 h-1 bg-one-primary-teal rounded-full ml-4"></div>}
-                </div>
-              ))}
-            </div>
-          </div>
-        </Container>
-      </div> */}
+      <style jsx>{`
+        @keyframes scanLine {
+          0% { top: 0%; opacity: 0; }
+          50% { opacity: 1; }
+          100% { top: 100%; opacity: 0; }
+        }
+        
+        @keyframes scan {
+          0% { background-position: 0 0; }
+          100% { background-position: 0 100%; }
+        }
+      `}</style>
     </section>
   );
 }
