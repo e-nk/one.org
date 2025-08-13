@@ -263,7 +263,7 @@ export default function LearnHero() {
       </Container>
 
       {/* Learning Categories Banner */}
-      <div className="hidden lg:block absolute bottom-8 left-0 right-0">
+      {/* <div className="hidden lg:block absolute bottom-8 left-0 right-0">
         <Container>
           <div className="bg-white/90 backdrop-blur-sm rounded-xl p-4 shadow-lg border border-one-primary-plum/10">
             <div className="flex flex-wrap items-center justify-center gap-4 text-center">
@@ -283,7 +283,7 @@ export default function LearnHero() {
             </div>
           </div>
         </Container>
-      </div>
+      </div> */}
     </section>
   );
 }

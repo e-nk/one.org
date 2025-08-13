@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { User, ChevronDown, ArrowRight, ExternalLink, Mail, Globe } from 'lucide-react';
+import { User, ChevronDown, ArrowRight, ExternalLink, Mail, Globe, Sparkles } from 'lucide-react';
+import RegistrationForm from '../learn/pathways-to-equity/RegistrationForm';
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -12,6 +13,7 @@ export default function Header() {
   const [mounted, setMounted] = useState(false);
   const [typewriterText, setTypewriterText] = useState('');
   const [showCursor, setShowCursor] = useState(true);
+  const [showRegistrationForm, setShowRegistrationForm] = useState(false);
   const pathname = usePathname();
 
   const fullText = "Empowering the next generation of changemakers";
@@ -262,45 +264,45 @@ export default function Header() {
               </Link>
             </nav>
 
-            {/* Login & Enroll Buttons + Mobile Menu */}
-            <div className="flex items-center space-x-3 sm:space-x-4">
+            {/* Desktop Action Buttons */}
+            <div className="hidden lg:flex items-center space-x-6">
               
-              {/* Login Button - Desktop Only */}
+              {/* Already have account? Login */}
               <Link 
                 href="https://online.oneacademy.org/login"
                 target="_blank"
-                className="hidden lg:inline-flex items-center px-4 py-2 lg:px-5 lg:py-2.5 border-2 border-one-primary-plum text-one-primary-plum font-colfax font-semibold rounded-full hover:bg-one-primary-plum hover:text-white transition-all duration-300 group text-sm lg:text-base"
+                className="text-sm text-gray-600 hover:text-one-primary-plum transition-colors duration-300 font-colfax"
               >
-                <User className="w-4 h-4 mr-2" />
-                <span>Login</span>
+                Already have an account? <span className="font-semibold underline decoration-2 underline-offset-2">Login</span>
               </Link>
 
-              {/* Enroll Now Button - Desktop Only */}
-              <Link 
-                href="/learn/pathways-to-equity"
-                className="hidden sm:inline-flex items-center px-6 py-3 bg-one-primary-plum text-white font-colfax font-semibold rounded-full hover:bg-one-primary-plum/90 hover:shadow-lg hover:shadow-one-primary-plum/25 transform hover:scale-105 transition-all duration-300 group"
-              >
-                <span>Enroll Now</span>
-                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
-              </Link>
-
-              {/* Mobile Menu Button */}
+              {/* Get Started Button */}
               <button
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="lg:hidden relative w-10 h-10 flex flex-col items-center justify-center space-y-1 group"
-                aria-label="Toggle mobile menu"
+                onClick={() => setShowRegistrationForm(true)}
+                className="inline-flex items-center px-6 py-3 bg-one-primary-plum text-white font-colfax font-semibold rounded-full hover:bg-one-primary-plum/90 hover:shadow-lg hover:shadow-one-primary-plum/25 transform hover:scale-105 transition-all duration-300 group"
               >
-                <span className={`w-6 h-0.5 bg-one-primary-plum transition-all duration-300 ${
-                  isMobileMenuOpen ? 'rotate-45 translate-y-1.5' : ''
-                }`}></span>
-                <span className={`w-6 h-0.5 bg-one-primary-plum transition-all duration-300 ${
-                  isMobileMenuOpen ? 'opacity-0' : ''
-                }`}></span>
-                <span className={`w-6 h-0.5 bg-one-primary-plum transition-all duration-300 ${
-                  isMobileMenuOpen ? '-rotate-45 -translate-y-1.5' : ''
-                }`}></span>
+                <Sparkles className="w-4 h-4 mr-2" />
+                <span>Get Started</span>
+                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
               </button>
             </div>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="lg:hidden relative w-10 h-10 flex flex-col items-center justify-center space-y-1 group"
+              aria-label="Toggle mobile menu"
+            >
+              <span className={`w-6 h-0.5 bg-one-primary-plum transition-all duration-300 ${
+                isMobileMenuOpen ? 'rotate-45 translate-y-1.5' : ''
+              }`}></span>
+              <span className={`w-6 h-0.5 bg-one-primary-plum transition-all duration-300 ${
+                isMobileMenuOpen ? 'opacity-0' : ''
+              }`}></span>
+              <span className={`w-6 h-0.5 bg-one-primary-plum transition-all duration-300 ${
+                isMobileMenuOpen ? '-rotate-45 -translate-y-1.5' : ''
+              }`}></span>
+            </button>
           </div>
         </div>
 
@@ -390,25 +392,24 @@ export default function Header() {
               {/* Mobile Action Buttons */}
               <div className="space-y-4 pt-4 border-t border-gray-200">
                 
-                {/* Mobile Login Button - Now Visible */}
+                {/* Mobile Login Link */}
                 <Link 
                   href="https://online.oneacademy.org/login"
                   target="_blank"
-                  className="flex items-center justify-center w-full px-4 py-3 border-2 border-one-primary-plum text-one-primary-plum font-colfax font-semibold rounded-xl hover:bg-one-primary-plum hover:text-white transition-all duration-300 group"
+                  className="flex items-center justify-center w-full px-4 py-2.5 text-gray-600 hover:text-one-primary-plum transition-colors duration-300 font-colfax text-sm"
                 >
-                  <User className="w-4 h-4 mr-2" />
-                  <span>Login to Academy</span>
-                  <ExternalLink className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
+                  Already have an account? <span className="font-semibold underline decoration-2 underline-offset-2 ml-1">Login</span>
                 </Link>
 
-                {/* Mobile Enroll Button */}
-                <Link 
-                  href="/learn/pathways-to-equity"
+                {/* Mobile Get Started Button */}
+                <button 
+                  onClick={() => setShowRegistrationForm(true)}
                   className="flex items-center justify-center w-full px-6 py-3 bg-one-primary-plum text-white font-colfax font-semibold rounded-xl hover:bg-one-primary-plum/90 transition-all duration-300 group"
                 >
-                  <span>Enroll Now</span>
+                  <Sparkles className="w-4 h-4 mr-2" />
+                  <span>Get Started</span>
                   <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
-                </Link>
+                </button>
               </div>
 
               {/* Mobile Contact */}
@@ -425,6 +426,12 @@ export default function Header() {
           </div>
         </div>
       </header>
+
+      {/* Registration Form Modal */}
+      <RegistrationForm 
+        isOpen={showRegistrationForm} 
+        onClose={() => setShowRegistrationForm(false)} 
+      />
     </>
   );
 }
