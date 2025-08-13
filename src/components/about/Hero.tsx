@@ -30,7 +30,7 @@ export default function AboutHero() {
   }, []);
 
   return (
-    <section className="relative min-h-screen bg-one-secondary-peach/20 flex items-center overflow-hidden -mt-20 lg:-mt-54 pt-20 lg:pt-24">
+    <section className="relative min-h-screen bg-one-secondary-peach/20 flex items-center overflow-hidden -mt-18 lg:-mt-26 pt-20 lg:pt-24">
       
       {/* Background decorative elements */}
       <div className="absolute inset-0">
