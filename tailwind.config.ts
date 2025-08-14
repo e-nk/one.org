@@ -26,6 +26,10 @@ const config: Config = {
             azul: '#081248',       // Action azul
             plum: '#73165a',       // Power plum
           },
+					tertiary: {
+            orange: '#ff7b00',      // Free orange
+            tomato: '#FF4B3E',    // Girls are the tomato
+          },
         },
       },
       fontFamily: {

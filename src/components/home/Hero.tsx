@@ -139,7 +139,7 @@ export default function Hero() {
                   className={`w-8 h-8 transition-all duration-300 ${
                     activePin === pin.id
                       ? 'text-one-primary-plum drop-shadow-lg'
-                      : 'text-one-primary-teal hover:text-one-primary-plum'
+                      : 'text-one-tertiary-orange hover:text-one-primary-plum'
                   }`}
                   strokeWidth={2.5}
                 />
@@ -148,7 +148,7 @@ export default function Hero() {
                 <div className={`absolute inset-0 w-8 h-8 border-2 rounded-full animate-ping ${
                   activePin === pin.id 
                     ? 'border-one-primary-plum opacity-40' 
-                    : 'border-one-primary-teal opacity-20'
+                    : 'border-one-tertiary-orange opacity-20'
                 }`}></div>
               </div>
 
