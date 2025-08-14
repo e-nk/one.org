@@ -2,11 +2,73 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { MapPinPlusInside, X } from 'lucide-react';
 import Container from '../layouts/Container';
 
 export default function Hero() {
   const [currentText, setCurrentText] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
+  const [activePin, setActivePin] = useState(null); // No default active pin
+
+  // Pin data with campaigns
+  const mapPins = [
+    {
+      id: 1,
+      region: "North America",
+      position: { top: "38%", left: "15%" },
+      campaign: "African Diaspora Development Institute",
+      description: "Mobilizes African diaspora communities in North America to support African development projects."
+    },
+    {
+      id: 2,
+      region: "Europe",
+      position: { top: "30%", left: "43%" },
+      campaign: "Fairtrade Foundation",
+      description: "Promotes fair trade practices to empower African farmers and producers."
+    },
+    {
+      id: 3,
+      region: "Europe",
+      position: { top: "27%", left: "47%" },
+      campaign: "Refugee Support Network",
+      description: "Provides mentorship and support to African refugees resettled in Europe."
+    },
+    {
+      id: 4,
+      region: "Global",
+      position: { top: "66%", left: "85%" },
+      campaign: "Global Partnership for Education (GPE)",
+      description: "Supports education systems in developing countries, with many programs across Africa."
+    },
+    {
+      id: 5,
+      region: "East Africa",
+      position: { top: "55%", left: "57%" },
+      campaign: "Sauti East Africa",
+      description: "Builds youth capacity through entrepreneurship and innovation hubs to foster economic growth."
+    },
+    {
+      id: 6,
+      region: "Africa",
+      position: { top: "51%", left: "47%" },
+      campaign: "African Youth Climate Hub",
+      description: "Empowers young Africans to lead climate change solutions through advocacy, education, and innovation."
+    },
+    {
+      id: 7,
+      region: "Africa",
+      position: { top: "68%", left: "52%" },
+      campaign: "Amref Health Africa",
+      description: "Works to improve health outcomes through community health worker programs and maternal health initiatives."
+    },
+    {
+      id: 8,
+      region: "Global",
+      position: { top: "60%", left: "28%" },
+      campaign: "Malaria No More",
+      description: "Works globally to eradicate malaria, focusing heavily on Africa."
+    }
+  ];
 
   const textRotations = [
     { main: 'Learn to Lead', sub: 'Education • Advocacy • Global Impact' },
@@ -33,6 +95,113 @@ export default function Hero() {
   return (
     <section className="relative min-h-screen bg-white flex items-center overflow-hidden -mt-30 lg:-mt-54 pt-20 lg:pt-24">
       
+      {/* World Map Background - Right Side, Positioned Closer to Content */}
+      <div className="absolute inset-0 hidden lg:block">
+        <div 
+          className="absolute top-16 right-0 w-3/5 h-[calc(100%-4rem)] bg-contain bg-center bg-no-repeat"
+          style={{
+            backgroundImage: "url('/images/map-1.png')",
+            backgroundSize: 'contain',
+            backgroundPosition: 'left center'
+          }}
+        >
+          {/* Subtle overlay for better text contrast */}
+          <div className="absolute inset-0 bg-white/30"></div>
+          
+          {/* Interactive Map Pins */}
+          {mapPins.map((pin) => (
+            <div
+              key={pin.id}
+              className={`absolute cursor-pointer group ${
+                activePin === pin.id ? 'z-[70]' : 'z-40'
+              }`}
+              style={{ 
+                top: pin.position.top, 
+                left: pin.position.left,
+                transform: 'translate(-50%, -50%)'
+              }}
+              onMouseEnter={() => {
+                console.log(`Hovering pin ${pin.id}`); // Debug log
+                setActivePin(pin.id);
+              }}
+              onMouseLeave={() => {
+                console.log(`Left pin ${pin.id}`); // Debug log
+                setActivePin(null);
+              }}
+            >
+              {/* Pin Icon - Always Visible */}
+              <div className={`relative transition-all duration-300 ${
+                activePin === pin.id 
+                  ? 'scale-125' 
+                  : 'scale-100 hover:scale-110'
+              }`}>
+                <MapPinPlusInside 
+                  className={`w-8 h-8 transition-all duration-300 ${
+                    activePin === pin.id
+                      ? 'text-one-primary-plum drop-shadow-lg'
+                      : 'text-one-primary-teal hover:text-one-primary-plum'
+                  }`}
+                  strokeWidth={2.5}
+                />
+                
+                {/* Pulse ring - Always visible for discoverability */}
+                <div className={`absolute inset-0 w-8 h-8 border-2 rounded-full animate-ping ${
+                  activePin === pin.id 
+                    ? 'border-one-primary-plum opacity-40' 
+                    : 'border-one-primary-teal opacity-20'
+                }`}></div>
+              </div>
+
+              {/* Info Card - Show only on hover */}
+              {activePin === pin.id && (
+                <div 
+                  className="absolute top-10 left-1/2 transform -translate-x-1/2 w-80 bg-white rounded-xl shadow-2xl border border-one-primary-plum/20 p-6 animate-fadeIn z-[80]"
+                  onMouseEnter={() => setActivePin(pin.id)} // Keep card open when hovering over it
+                  onMouseLeave={() => setActivePin(null)}
+                >
+                  
+                  {/* Region Badge */}
+                  <div className="inline-flex items-center px-3 py-1 bg-one-primary-plum/10 rounded-full mb-4">
+                    <div className="w-2 h-2 bg-one-primary-plum rounded-full mr-2 animate-pulse"></div>
+                    <span className="text-xs font-semibold text-one-primary-plum font-colfax uppercase tracking-wider">
+                      {pin.region}
+                    </span>
+                  </div>
+
+                  {/* Campaign Title */}
+                  <h3 className="text-lg font-bold text-one-primary-black font-italian-plate mb-3 leading-tight">
+                    {pin.campaign}
+                  </h3>
+
+                  {/* Description */}
+                  <p className="text-sm text-gray-600 font-colfax leading-relaxed">
+                    {pin.description}
+                  </p>
+
+                  {/* Decorative bottom border */}
+                  <div className="mt-4 pt-4 border-t border-gray-100">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-2">
+                        <div className="w-2 h-2 bg-one-primary-teal rounded-full"></div>
+                        <span className="text-xs text-gray-500 font-colfax">Active Campaign</span>
+                      </div>
+                      <div className="text-xs text-one-primary-plum font-semibold font-colfax">
+                        #{pin.id.toString().padStart(2, '0')}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Arrow pointing to pin */}
+                  <div className="absolute -top-2 left-1/2 transform -translate-x-1/2">
+                    <div className="w-4 h-4 bg-white border-l border-t border-one-primary-plum/20 transform rotate-45"></div>
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* Background decorative elements */}
       <div className="absolute inset-0">
         <div className="absolute top-20 right-10 w-64 h-64 bg-one-primary-plum/10 rounded-full blur-3xl"></div>
@@ -150,156 +319,9 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Visual Side - World Map with Enhanced Active Locations */}
-          <div className={`hidden lg:block relative transform transition-all duration-1000 delay-300 ${
-            isVisible ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0'
-          }`}>
-            <div className="relative">
-              
-              {/* World Map Container */}
-              <div className="aspect-[4/3] rounded-2xl overflow-hidden relative shadow-2xl border-4 border-white/30">
-                
-                {/* World Map Image */}
-                <img 
-                  src="/images/world-map-2.png" 
-                  alt="ONE Global Impact - Active locations worldwide" 
-                  className="w-full h-full object-cover"
-                />
-                
-                {/* Map Overlay for better contrast */}
-                <div className="absolute inset-0 bg-gradient-to-br from-one-primary-black/30 via-transparent to-one-primary-plum/20"></div>
-
-                {/* North America Spots - Enhanced */}
-                <div className="absolute top-[35%] left-[10%] w-5 h-5 bg-one-primary-plum rounded-full shadow-lg shadow-one-primary-plum/50" 
-                     style={{
-                       animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
-                     }}>
-                  <div className="absolute inset-0 w-5 h-5 bg-one-primary-plum rounded-full animate-ping opacity-75"></div>
-                </div>
-                <div className="absolute top-[34%] left-[25%] w-4 h-4 bg-one-primary-plum rounded-full shadow-md shadow-one-primary-plum/40" 
-                     style={{
-                       animation: 'pulse 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite 0.5s'
-                     }}>
-                  <div className="absolute inset-0 w-4 h-4 bg-one-primary-plum rounded-full animate-ping opacity-60"></div>
-                </div>
-                <div className="absolute top-[75%] left-[30%] w-6 h-6 bg-one-primary-plum rounded-full shadow-lg shadow-one-primary-plum/60" 
-                     style={{
-                       animation: 'pulse 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite 1s'
-                     }}>
-                  <div className="absolute inset-0 w-6 h-6 bg-one-primary-plum rounded-full animate-ping opacity-70"></div>
-                </div>
-
-                {/* Europe Spots - Enhanced */}
-                <div className="absolute top-[35%] left-[48%] w-5 h-5 bg-one-primary-plum rounded-full shadow-lg shadow-one-primary-plum/50" 
-                     style={{
-                       animation: 'pulse 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite 0.3s'
-                     }}>
-                  <div className="absolute inset-0 w-5 h-5 bg-one-primary-plum rounded-full animate-ping opacity-75"></div>
-                </div>
-                <div className="absolute top-[35%] left-[50%] w-4 h-4 bg-one-primary-plum rounded-full shadow-md shadow-one-primary-plum/40" 
-                     style={{
-                       animation: 'pulse 2.8s cubic-bezier(0.4, 0, 0.6, 1) infinite 0.8s'
-                     }}>
-                  <div className="absolute inset-0 w-4 h-4 bg-one-primary-plum rounded-full animate-ping opacity-60"></div>
-                </div>
-
-                {/* Middle East Spots - Enhanced */}
-                <div className="absolute top-[40%] left-[58%] w-4 h-4 bg-one-primary-plum rounded-full shadow-md shadow-one-primary-plum/40" 
-                     style={{
-                       animation: 'pulse 2.6s cubic-bezier(0.4, 0, 0.6, 1) infinite 0.6s'
-                     }}>
-                  <div className="absolute inset-0 w-4 h-4 bg-one-primary-plum rounded-full animate-ping opacity-65"></div>
-                </div>
-                <div className="absolute top-[38%] left-[60%] w-5 h-5 bg-one-primary-plum rounded-full shadow-lg shadow-one-primary-plum/50" 
-                     style={{
-                       animation: 'pulse 2.3s cubic-bezier(0.4, 0, 0.6, 1) infinite 0.2s'
-                     }}>
-                  <div className="absolute inset-0 w-5 h-5 bg-one-primary-plum rounded-full animate-ping opacity-70"></div>
-                </div>
-
-                {/* Africa Spots - Enhanced Multiple locations */}
-                <div className="absolute top-[60%] left-[62%] w-6 h-6 bg-one-primary-plum rounded-full shadow-xl shadow-one-primary-plum/60" 
-                     style={{
-                       animation: 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite 0.1s'
-                     }}>
-                  <div className="absolute inset-0 w-6 h-6 bg-one-primary-plum rounded-full animate-ping opacity-80"></div>
-                </div>
-                <div className="absolute top-[55%] left-[55%] w-5 h-5 bg-one-primary-plum rounded-full shadow-lg shadow-one-primary-plum/50" 
-                     style={{
-                       animation: 'pulse 2.1s cubic-bezier(0.4, 0, 0.6, 1) infinite 0.7s'
-                     }}>
-                  <div className="absolute inset-0 w-5 h-5 bg-one-primary-plum rounded-full animate-ping opacity-75"></div>
-                </div>
-                <div className="absolute top-[55%] left-[50%] w-4 h-4 bg-one-primary-plum rounded-full shadow-md shadow-one-primary-plum/40" 
-                     style={{
-                       animation: 'pulse 2.7s cubic-bezier(0.4, 0, 0.6, 1) infinite 0.4s'
-                     }}>
-                  <div className="absolute inset-0 w-4 h-4 bg-one-primary-plum rounded-full animate-ping opacity-60"></div>
-                </div>
-                <div className="absolute top-[60%] left-[53%] w-5 h-5 bg-one-primary-plum rounded-full shadow-lg shadow-one-primary-plum/50" 
-                     style={{
-                       animation: 'pulse 1.9s cubic-bezier(0.4, 0, 0.6, 1) infinite 0.9s'
-                     }}>
-                  <div className="absolute inset-0 w-5 h-5 bg-one-primary-plum rounded-full animate-ping opacity-70"></div>
-                </div>
-                <div className="absolute top-[48%] left-[48%] w-4 h-4 bg-one-primary-plum rounded-full shadow-md shadow-one-primary-plum/40" 
-                     style={{
-                       animation: 'pulse 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite 1.1s'
-                     }}>
-                  <div className="absolute inset-0 w-4 h-4 bg-one-primary-plum rounded-full animate-ping opacity-65"></div>
-                </div>
-                <div className="absolute top-[70%] left-[62%] w-4 h-4 bg-one-primary-plum rounded-full shadow-md shadow-one-primary-plum/40" 
-                     style={{
-                       animation: 'pulse 2.9s cubic-bezier(0.4, 0, 0.6, 1) infinite 1.3s'
-                     }}>
-                  <div className="absolute inset-0 w-4 h-4 bg-one-primary-plum rounded-full animate-ping opacity-60"></div>
-                </div>
-                <div className="absolute top-[82%] left-[57%] w-5 h-5 bg-one-primary-plum rounded-full shadow-lg shadow-one-primary-plum/50" 
-                     style={{
-                       animation: 'pulse 1.7s cubic-bezier(0.4, 0, 0.6, 1) infinite 0.15s'
-                     }}>
-                  <div className="absolute inset-0 w-5 h-5 bg-one-primary-plum rounded-full animate-ping opacity-75"></div>
-                </div>
-                <div className="absolute top-[32%] left-[65%] w-4 h-4 bg-one-primary-plum rounded-full shadow-md shadow-one-primary-plum/40" 
-                     style={{
-                       animation: 'pulse 2.6s cubic-bezier(0.4, 0, 0.6, 1) infinite 0.75s'
-                     }}>
-                  <div className="absolute inset-0 w-4 h-4 bg-one-primary-plum rounded-full animate-ping opacity-65"></div>
-                </div>
-
-                {/* Large Pulse rings for major locations */}
-                <div className="absolute top-[75%] left-[30%] w-12 h-12 border-2 border-one-primary-plum rounded-full animate-ping opacity-30"></div>
-                <div className="absolute top-[60%] left-[62%] w-12 h-12 border-2 border-one-primary-plum rounded-full animate-ping opacity-25 delay-500"></div>
-                <div className="absolute top-[35%] left-[48%] w-12 h-12 border-2 border-one-primary-plum rounded-full animate-ping opacity-20 delay-1000"></div>
-
-                {/* Corner Decorative Elements */}
-                <div className="absolute top-4 right-4 w-8 h-8 border-t-2 border-r-2 border-one-primary-plum/50 rounded-tr-lg"></div>
-                <div className="absolute bottom-4 left-4 w-8 h-8 border-b-2 border-l-2 border-one-primary-teal/50 rounded-bl-lg"></div>
-
-                {/* Global Impact Badge */}
-                <div className="absolute top-6 left-6 bg-white/95 backdrop-blur-sm rounded-xl p-3 shadow-lg">
-                  <div className="text-center">
-                    <div className="text-lg font-bold text-one-primary-plum font-italian-plate">Global</div>
-                    <div className="text-xs text-gray-600 font-colfax">Impact</div>
-                  </div>
-                </div>
-
-                {/* Stats Overlay */}
-                <div className="absolute bottom-6 right-6 bg-white/95 backdrop-blur-sm rounded-xl p-4 shadow-lg">
-                  <div className="flex items-center space-x-4">
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-one-primary-plum font-italian-plate">20+</div>
-                      <div className="text-xs text-gray-600 font-colfax">Countries</div>
-                    </div>
-                    <div className="w-px h-8 bg-gray-300"></div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-one-primary-teal font-italian-plate">50K+</div>
-                      <div className="text-xs text-gray-600 font-colfax">Activists</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+          {/* Right side content - This will be overlaid on the map background */}
+          <div className="hidden lg:block relative">
+            {/* This space intentionally left minimal - the map is now part of the background */}
           </div>
         </div>
       </Container>
